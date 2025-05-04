@@ -8,17 +8,20 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 
+// Use environment variable for database connection
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'heyfood_clone',
-  password: 'beautyray16',
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false, // Required for Render's SSL
+  },
 });
 
 pool.connect()
-  .then(() => console.log('Connected to PostgreSQL'))
-  .catch(err => console.error('Error connecting to PostgreSQL:', err));
+  .then(() => console.log('Connected to PostgreSQL on Render'))
+  .catch(err => {
+    console.error('Error connecting to PostgreSQL on Render:', err);
+    // Handle the error appropriately, e.g., exit the application or retry connection
+  });
 
 app.get('/test', (req, res) => {
   console.log('Received request on /test');
@@ -41,10 +44,8 @@ app.get('/api/restaurants', async (req, res) => {
     values.push(`%${search}%`);
   }
 
-
   if (tags) {
     const tagList = tags.split(',').map(tag => tag.trim().toLowerCase()); // Convert to lowercase
-
 
     const tagConditions = tagList.map((tag, index) => `LOWER(tags) LIKE $${values.length + index + 1}`);
     conditions.push(`(${tagConditions.join(' OR ')})`); // Combine conditions with OR
@@ -104,7 +105,6 @@ app.get('/api/restaurants', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch restaurants' });
   }
 });
-
 
 app.get('/api/tags', async (req, res) => {
   try {
