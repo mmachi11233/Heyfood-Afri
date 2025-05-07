@@ -52,21 +52,21 @@ const tagImageMap = [
 
 const banners = [
   {
-    imageUrl: '/Images/Frame 1599.png_1700910292928',
+    imageUrl: '',
     altText: 'New Arrivals',
     linkUrl: '/new',
     width: 400,
     height: 200
   },
   {
-    imageUrl: '/Images/Frame 1601.png_1700910656254',
+    imageUrl: '',
     altText: 'Featured Restaurants',
     linkUrl: '/featured',
      width: 400,
     height: 200
   },
   {
-    imageUrl: '/Images/FREE DELIVERY APR23 (1).png_1745411888046',
+    imageUrl: '',
     altText: 'Free Delivery',
     linkUrl: '/free',
      width: 400,
